@@ -1,4 +1,4 @@
-FROM ubuntu:26.04
+FROM ubuntu:24.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -18,6 +18,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     wget \
     ca-certificates \
     python3 \
+    python3-dev \
     python3-pip \
     python3-venv \
     pkg-config \
@@ -27,6 +28,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libomp-dev \
     valgrind \
     strace \
+    sudo \
     lsof \
     procps \
     file \
@@ -45,10 +47,11 @@ ENV CXX=clang++
 ENV CCACHE_DIR=/home/dev/.cache/ccache
 ENV CMAKE_GENERATOR=Ninja
 
-# Don't work as root.
+# Start as dev and allow password-authenticated sudo.
 RUN useradd \
       --create-home \
       --shell /bin/bash \
+      --groups sudo \
       dev \
     && mkdir -p /work /home/dev/.cache/ccache \
     && chown -R dev:dev /work /home/dev
