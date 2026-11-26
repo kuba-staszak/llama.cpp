@@ -53,10 +53,13 @@ RUN useradd \
       --shell /bin/bash \
       --groups sudo \
       dev \
-    && mkdir -p /work /home/dev/.cache/ccache \
-    && chown -R dev:dev /work /home/dev
+    && mkdir -p /work /home/dev/.cache/ccache /opt/venvs \
+    && chown -R dev:dev /work /home/dev /opt/venvs
 
 USER dev
+# Seed the named volume with a writable Linux virtual environment.
+RUN python3 -m venv /opt/venvs/tiny-gguf
+
 WORKDIR /work
 
 CMD ["/bin/bash"]
